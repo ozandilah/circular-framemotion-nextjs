@@ -1,101 +1,106 @@
+"use client";
+import { motion } from "framer-motion";
 import Image from "next/image";
+import { useState } from "react";
+
+const logos = [
+  {
+    id: "intelligence",
+    src: "/assets/ai.png",
+    alt: "Intelligence Quantum",
+  },
+  {
+    id: "pondasi",
+    src: "/assets/pondasi.png",
+    alt: "Pondasi",
+  },
+  {
+    id: "rumahkita",
+    src: "/assets/homekita.png",
+    alt: "Rumah Kita",
+  },
+  {
+    id: "kreasi",
+    src: "/assets/kreasidigital.png",
+    alt: "Kreasi Digital Interasia",
+  },
+];
+
+const defaultLogo = {
+  id: "asa",
+  src: "/assets/asa.png",
+  alt: "Asa Kreasi Interasia",
+};
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [selectedLogo, setSelectedLogo] = useState(defaultLogo);
+  const logoAngle = 360 / logos.length;
+  const radius = 180;
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  return (
+    <div className="flex justify-between items-center h-screen relative">
+      <div className="relative w-1/2 h-full flex justify-center items-center">
+        <motion.div
+          className="absolute w-full h-full flex justify-center items-center"
+          initial={{ rotate: 0 }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        >
+          {logos.map((logo, index) => (
+            <motion.div
+              key={logo.id}
+              className="absolute cursor-pointer"
+              style={{
+                transform: `rotate(${
+                  logoAngle * index
+                }deg) translate(${radius}px) rotate(-${logoAngle * index}deg)`,
+              }}
+              onClick={() => setSelectedLogo(logo)}
+            >
+              <Image
+                src={logo.src}
+                alt={logo.alt}
+                width={40}
+                height={40}
+                className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20"
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Selected logo preview */}
+      <div className="relative w-1/2 h-full flex justify-center items-center">
+        <motion.div
+          key={selectedLogo.id}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col items-center"
+        >
+          <Image
+            src="/robot-hand.png"
+            alt="Robot Hand"
+            width={300}
+            height={300}
+            className="max-w-full h-auto" // Responsive image
+          />
+          <motion.div
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
           >
             <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src={selectedLogo.src}
+              alt={selectedLogo.alt}
+              width={100}
+              height={100}
+              className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36" // Responsive sizes
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }
